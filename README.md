@@ -1,6 +1,6 @@
 # wasm_party
 Here is the code I made while learning to use WebAssembly.
-
+It runs and visualizes a pathfinding algorithm in the browser.
 
 ## Run online
 Click this link: [github.io/pathfinding_wasm](https://askeladd123.github.io/pathfinding_wasm/).
