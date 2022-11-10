@@ -7,15 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install
+      - name: Installing WASM compiler
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-      - name: Build
+      - name: Building WASM
         run: wasm-pack build --target bundler
-      - name: Pack
+      - name: Packing
         run: |
           npm ci
           npm run build
-      - name: Deploy 🚀
+      - name: Deploying to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist
