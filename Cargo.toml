@@ -1,0 +1,25 @@
+[package]
+name = "wasm_party"
+version = "0.1.0"
+authors = ["Ask Sødal"]
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2.37"
+js-sys = "0.3"
+getrandom = { version = "0.2", features = ["js"] }
+rand = "0.8"
+log = "0.4"
+console_log = "0.2.0"
+
+[dependencies.web-sys]
+version = "0.3.4"
+features = [
+  'CanvasRenderingContext2d',
+  'HtmlCanvasElement',
+  'Document',
+  'Window',
+]
