@@ -1,3 +1,4 @@
+![](res/v1.png)
 # wasm_party
 Here is the code I made while learning to use WebAssembly.
 It runs and visualizes a pathfinding algorithm in the browser.
