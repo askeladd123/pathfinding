@@ -13,6 +13,7 @@ js-sys = "0.3"
 getrandom = { version = "0.2", features = ["js"] }
 rand = "0.8"
 log = "0.4"
+console_error_panic_hook = "0.1"
 console_log = "0.2.0"
 
 [dependencies.web-sys]

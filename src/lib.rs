@@ -4,6 +4,7 @@
 mod search;
 mod grid;
 
+use log::info;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use crate::grid::{Grid, Tile};
@@ -24,6 +25,8 @@ pub struct Data {
 impl Data {
     pub fn new()->Self{
     
+        std::panic::set_hook(Box::new(console_error_panic_hook::hook));
+        
         console_log::init().unwrap();
     
         let window = web_sys::window().unwrap();
@@ -33,8 +36,11 @@ impl Data {
             .dyn_into::<web_sys::HtmlCanvasElement>()
             .map_err(|_| ()).unwrap();
     
+        let grid_w = 64;
+        let grid_h = (grid_w as f32 * canvas.height() as f32 / canvas.width() as f32) as u16;
+        
         let grid_first = Grid::new_random(
-            (64, 32),
+            (grid_w, grid_h),
             (
                 canvas.width() as f32,
                 canvas.height() as f32,

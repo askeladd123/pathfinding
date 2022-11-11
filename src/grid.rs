@@ -73,11 +73,11 @@ impl Grid{
             self.set_tile(curr, Tile::Wall);
     
             for _ in 0..BRANCH_LEN{
-                curr = self.pos_to_index(
-                    *self.empty_bros(curr).choose(&mut rng).unwrap()
-                );
-                tiles.push(curr);
-                self.set_tile(curr, Tile::Wall);
+                if let Some(pos) = self.empty_bros(curr).choose(&mut rng){
+                    curr = self.pos_to_index(*pos);
+                    tiles.push(curr);
+                    self.set_tile(curr, Tile::Wall);
+                }
             }
         }
     
