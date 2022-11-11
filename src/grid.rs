@@ -12,6 +12,13 @@ pub struct Grid{
     gap_tile_ratio: f32,
 }
 
+pub struct ShuffleResult{
+    pub seeds: Vec<usize>,
+    pub branches: Vec<Vec<usize>>,
+    pub fill: Vec<usize>,
+}
+
+
 // TODO: tiles blør fra høyre til venstre kant
 
 impl Grid{
@@ -48,37 +55,43 @@ impl Grid{
         self.tiles[rng.gen_range(0..len)] = Tile::Goal;
     }
     
-    pub fn shuffle_visual(&mut self) -> Vec<usize>{
+    pub fn shuffle_visual(&mut self) -> ShuffleResult {
         
-        use rand::prelude::*;
-    
-        let mut rng = thread_rng();
-    
+        // settings
         const SEED_R:f32 = 0.005;
         const BRANCH_LEN:u16 = 24;
         let seeds = (SEED_R * self.tiles.len() as f32) as u16;
+        use rand::prelude::*;
+        // <-
+        
+        let mut rng = thread_rng();
         
         self.set_all(Tile::Empty);
         
-        // så frø
-        let mut tiles: Vec<usize> = (0..seeds).map(|_|rng.gen_range(0..self.tiles.len()))
-            .collect();
+        let mut tiles = ShuffleResult{
+            seeds: Vec::new(),
+            branches: Vec::new(),
+            fill: Vec::new(),
+        };
         
-        self.set_tiles(tiles.clone(), Tile::Wall);
+        // så frø
+        tiles.seeds = (0..seeds).map(|_|rng.gen_range(0..self.tiles.len())).collect();
+        
+        self.set_tiles(tiles.seeds.clone(), Tile::Wall);
         
         // gro greiner
-        for tile in tiles.clone().into_iter(){
-            
-            let mut curr = tile;
-            self.set_tile(curr, Tile::Wall);
-    
+        for tile in tiles.seeds.iter(){
+            let mut curr = *tile;
+
+            tiles.branches.push(Vec::new());
             for _ in 0..BRANCH_LEN{
                 if let Some(pos) = self.empty_bros(curr).choose(&mut rng){
                     curr = self.pos_to_index(*pos);
-                    tiles.push(curr);
+                    tiles.branches.last_mut().unwrap().push(curr);
                     self.set_tile(curr, Tile::Wall);
                 }
             }
+            tiles.branches.reverse();
         }
     
         // fyll hull og kanter
@@ -91,8 +104,12 @@ impl Grid{
                 3 => 0.25,
                 _ => 0.00,
             }) {
-                tiles.push(pos);
+                tiles.fill.push(pos);
             }
+        }
+        
+        for tile in tiles.fill.iter(){
+            self.set_tile(*tile, Tile::Wall);
         }
 
         let start = loop{
@@ -111,7 +128,6 @@ impl Grid{
         self.set_tile(start, Tile::Start);
         self.set_tile(goal, Tile::Goal);
         
-        tiles.reverse();
         tiles
     }
     

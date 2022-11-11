@@ -7,7 +7,7 @@ mod grid;
 use log::info;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use crate::grid::{Grid, Tile};
+use crate::grid::{Grid, ShuffleResult, Tile};
 use crate::search::{astar_visual, VisualResult};
 
 #[wasm_bindgen]
@@ -18,7 +18,7 @@ pub struct Data {
     grid_onscreen: Grid,
     step: u32,
     control_panel: web_sys::Element,
-    wall_indices: Vec<usize>,
+    generating: Option<ShuffleResult>,
 }
 
 #[wasm_bindgen]
@@ -56,7 +56,7 @@ impl Data {
             grid_onscreen: grid_first.clone(),
             grid_offscreen: grid_first,
             step: 0,
-            wall_indices: Vec::new(),
+            generating: None,
         }
     }
     
@@ -66,9 +66,30 @@ impl Data {
     
     pub fn tick(&mut self) {
         
-        if let Some(i) = self.wall_indices.pop(){
-            self.grid_onscreen.set_tile(i, Tile::Wall);
-            if self.wall_indices.is_empty(){
+        
+        if let Some(ref mut r) = self.generating {
+            if !r.seeds.is_empty(){
+                while let Some(seed) = r.seeds.pop() {
+                    self.grid_onscreen.set_tile(seed, Tile::Wall);
+                }
+            }
+            else if r.branches.iter().find(|x|!x.is_empty()).is_some() {
+                info!("trying to pop branches with {} elements", r.branches.len());
+                for branch in r.branches.iter_mut(){
+                    if let Some(t) = branch.pop(){
+                        self.grid_onscreen.set_tile(t, Tile::Wall);
+                    }
+                }
+            }
+            else if !r.fill.is_empty(){
+                info!("trying to pop fill with {} elements", r.fill.len());
+                while let Some(t) = r.fill.pop() {
+                    self.grid_onscreen.set_tile(t, Tile::Wall);
+                }
+            }
+            else{
+                info!("generating done!");
+                self.generating = None;
                 self.grid_offscreen = self.grid_onscreen.clone();
             }
         }
@@ -79,7 +100,7 @@ impl Data {
                         self.grid_onscreen.set_tile(pos, Tile::Path);
                     }
                     self.grid_onscreen.set_all(Tile::Empty);
-                    self.wall_indices.append(&mut self.grid_onscreen.shuffle_visual());
+                    self.generating = Some(self.grid_onscreen.shuffle_visual());
                     self.step = 0;
                 },
                 VisualResult::NotFound { queued, head } => {
@@ -91,7 +112,7 @@ impl Data {
                 },
                 VisualResult::Impossible => {
                     self.grid_onscreen.set_all(Tile::Empty);
-                    self.wall_indices.append(&mut self.grid_onscreen.shuffle_visual());
+                    self.generating = Some(self.grid_onscreen.shuffle_visual());
                     self.step = 0;
                 },
             }
