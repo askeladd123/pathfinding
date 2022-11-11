@@ -74,7 +74,6 @@ impl Data {
                 }
             }
             else if r.branches.iter().find(|x|!x.is_empty()).is_some() {
-                info!("trying to pop branches with {} elements", r.branches.len());
                 for branch in r.branches.iter_mut(){
                     if let Some(t) = branch.pop(){
                         self.grid_onscreen.set_tile(t, Tile::Wall);
@@ -82,13 +81,11 @@ impl Data {
                 }
             }
             else if !r.fill.is_empty(){
-                info!("trying to pop fill with {} elements", r.fill.len());
                 while let Some(t) = r.fill.pop() {
                     self.grid_onscreen.set_tile(t, Tile::Wall);
                 }
             }
             else{
-                info!("generating done!");
                 self.generating = None;
                 self.grid_offscreen = self.grid_onscreen.clone();
             }
