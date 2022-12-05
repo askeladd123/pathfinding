@@ -13,10 +13,9 @@ jobs:
         run: cargo fetch
       - name: Building WASM
         run: wasm-pack build --target web
-      - name: Deploying to GitHub Pages 1/2
-        run: actions/upload-pages-artefact
-      - name: Deploying to GitHub Pages 2/2
-        run: actions/deploy-pages
-        #uses: JamesIves/github-pages-deploy-action@v4
-        #with:
-        #  folder: .
+      - name: Moving files
+        run: cp index.html pkg/
+      - name: Deploying to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: pkg
