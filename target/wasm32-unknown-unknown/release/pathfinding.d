@@ -1,1 +1,0 @@
-/home/runner/work/pathfinding/pathfinding/target/wasm32-unknown-unknown/release/pathfinding.wasm: /home/runner/work/pathfinding/pathfinding/src/grid.rs /home/runner/work/pathfinding/pathfinding/src/lib.rs /home/runner/work/pathfinding/pathfinding/src/search.rs
