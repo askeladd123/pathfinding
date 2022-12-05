@@ -14,7 +14,7 @@ jobs:
       - name: Building WASM
         run: wasm-pack build --target web
       - name: Deleting .gitignore
-        run: find ./pkg -name ".gitignore" -delete
+        run: find -name ".gitignore" -delete; find ./pkg -name ".gitignore" -delete
       - name: Deploying to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
