@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>pathfinding!</title>
+  </head>
+  <body>
+    <p style="text-align: center;">Should display animation</p>
+    <p style="text-align: center;" id="control panel"></p>
+    <canvas id="canvas" width="1024" height="512"></canvas>
+    <style>
+        canvas {
+            margin: auto;
+            display: block;
+            overflow: hidden;
+            width: 90%;
+        }
+    </style>
+    <script type="module">
+      import init, { Data } from "./pkg/pathfinding.js";
+
+      await init()
+
+      var data = Data.new()
+
+      function tick(){
+
+        data.tick()
+        window.requestAnimationFrame(tick)
+      }
+      window.requestAnimationFrame(tick)
+    </script>
+  </body>
+</html>
