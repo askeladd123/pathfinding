@@ -10,12 +10,6 @@ jobs:
       - name: Installing WASM compiler
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - name: Building WASM
-        run: wasm-pack build --target bundler
-      - name: Packing
-        run: |
-          npm ci
-          npm run build
+        run: wasm-pack build --target web
       - name: Deploying to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist

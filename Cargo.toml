@@ -1,5 +1,5 @@
 [package]
-name = "wasm_party"
+name = "pathfinding"
 version = "0.1.0"
 authors = ["Ask Sødal"]
 edition = "2021"

@@ -10,21 +10,11 @@ Requires JavaScript and WebAssembly support; should work in most browsers.
 ---
 
 ## Run locally
-To run locally you need a browser with JavaScript and WebAssembly support, and
-[wasm-pack](https://github.com/rustwasm/wasm-pack) and 
-[npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 
-installed on your computer.
-Run these commands from terminal, from this folder:
-* ```wasm-pack build```
-* ```npm install```
+To run locally, you need [wasm-pack](https://github.com/rustwasm/wasm-pack) to build. You need a *http server* to load the code, and to run it. I use [nvm http-server](https://www.npmjs.com/package/http-server). Run these commands in the root folder:
+- `wasm-pack build --target web`
+- `http-server`
 
-Now you have two options:
-1) ```npm run start``` to run the program in [localhost:8080]()
-2) <s>```npm run build``` to pack then open ***dist/index.html*** in a browser</s>
+The program should now run in [localhost:8080]().
 
 ## Potential problems
-```wasm-pack build``` in short for ```wasm-pack build --target bundler```.
-This may change in the future. Consider using the second one.
-
-I use *Windows 11*. I had trouble with *npm 17*, 
-so I used *npm 16* instead.
+- **python http.server** didn't work for me
