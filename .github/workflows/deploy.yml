@@ -13,9 +13,9 @@ jobs:
         run: cargo fetch
       - name: Building WASM
         run: wasm-pack build --target web
-      - name: Moving files
-        run: cp index.html pkg/
+      - name: Deleting .gitignore
+        run: find ./pkg -name ".gitignore" -delete
       - name: Deploying to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: pkg
+          folder: .
