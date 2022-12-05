@@ -9,7 +9,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Installing WASM compiler
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      - name: Fetching dependencies
+        run: cargo fetch
       - name: Building WASM
         run: wasm-pack build --target web
       - name: Deploying to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: .
