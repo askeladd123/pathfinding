@@ -1,0 +1,26 @@
+[package]
+name = "pathfinding"
+version = "0.1.0"
+authors = ["Ask Sødal"]
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2.37"
+js-sys = "0.3.60"
+getrandom = { version = "0.2.8", features = ["js"] }
+rand = "0.8.5"
+log = "0.4.17"
+console_error_panic_hook = "0.1.7"
+console_log = "0.2.0"
+
+[dependencies.web-sys]
+version = "0.3.4"
+features = [
+  'CanvasRenderingContext2d',
+  'HtmlCanvasElement',
+  'Document',
+  'Window',
+]
