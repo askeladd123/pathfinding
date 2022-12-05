@@ -13,8 +13,9 @@ jobs:
         run: cargo fetch
       - name: Building WASM
         run: wasm-pack build --target web
-      - name: Deleting .gitignore
-        run: find -name ".gitignore" -delete; find ./pkg -name ".gitignore" -delete
+      - name: Deleting unnecessary files
+        run: rm -r res src target; rm .gitignore pkg/.gitignore README.md Cargo.lock Cargo.toml
+        #run: find -name ".gitignore" -delete; find ./pkg -name ".gitignore" -delete
       - name: Deploying to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
